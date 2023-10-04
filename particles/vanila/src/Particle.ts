@@ -3,23 +3,18 @@ import { getRandomNumber } from './utils';
 export default class Particle {
 	ctx;
 
-	x;
+	x = getRandomNumber(0, innerWidth);
 
-	y;
+	y = getRandomNumber(0, innerHeight);
 
-	radius;
+	vy = getRandomNumber(1, 5);
 
-	vy;
+	radius = getRandomNumber(50, 100);
 
-	acc;
+	acc = 1.03;
 
 	constructor(ctx: CanvasRenderingContext2D) {
 		this.ctx = ctx;
-		this.x = getRandomNumber(0, innerWidth);
-		this.y = getRandomNumber(0, innerHeight);
-		this.vy = getRandomNumber(1, 5);
-		this.radius = getRandomNumber(50, 100);
-		this.acc = 1.03;
 	}
 
 	update() {

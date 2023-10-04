@@ -10,10 +10,6 @@ const ctx = canvas.getContext('2d')!;
 const FPS = 60;
 const INTERVAL = 1000 / FPS;
 
-let now = 0;
-let delta = 0;
-let then = Date.now();
-
 let canvasWidth = 0;
 let canvasHeight = 0;
 
@@ -77,10 +73,18 @@ const setGUI = () => {
 	});
 };
 
-const animate = () => {
-	window.requestAnimationFrame(animate);
-	now = Date.now();
-	delta = now - then;
+const getIntervalData = (then: number) => {
+	const now = Date.now();
+	const delta = now - then;
+	return {
+		now,
+		delta,
+	};
+};
+
+const animate = (then: number = 0) => {
+	window.requestAnimationFrame(animate.bind(then));
+	const { now, delta } = getIntervalData(then);
 
 	if (delta >= INTERVAL) {
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
