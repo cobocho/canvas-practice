@@ -1,42 +1,51 @@
-const canvas = document.querySelector('canvas')!;
-const ctx = canvas.getContext('2d')!;
-const dpr = window.devicePixelRatio;
-const FPS = 60;
-const INTERVAL = 1000 / FPS;
+import CanvasOption from './CanvasOption';
 
-let now, delta;
-let then = Date.now();
+class Canvas extends CanvasOption {
+	constructor() {
+		super();
+		this.init();
+	}
 
-let canvasWidth, canvasHeight;
+	public init() {
+		this.canvasWidth = innerWidth;
+		this.canvasHeight = innerHeight;
 
-const init = () => {
-	canvasWidth = innerWidth;
-	canvasHeight = innerHeight;
+		this.canvas.width = this.canvasWidth * this.dpr;
+		this.canvas.height = this.canvasHeight * this.dpr;
 
-	canvas.style.width = canvasWidth + 'px';
-	canvas.style.height = canvasHeight + 'px';
+		this.ctx.scale(this.dpr, this.dpr);
 
-	canvas.width = canvasWidth * dpr;
-	canvas.height = canvasHeight * dpr;
+		this.canvas.style.width = this.canvasWidth + 'px';
+		this.canvas.style.height = this.canvasHeight + 'px';
+	}
 
-	ctx.scale(dpr, dpr);
-};
+	public render() {
+		let now, delta;
+		let then = Date.now();
 
-const render = () => {
-	requestAnimationFrame(render);
+		const frame = () => {
+			requestAnimationFrame(() => this.render());
 
-	now = Date.now();
-	delta = now - then;
-	if (delta < INTERVAL) return;
+			now = Date.now();
+			delta = now - then;
 
-	then = now - (delta % INTERVAL);
-};
+			if (delta < this.INTERVAL) return;
+
+			this.ctx.fillRect(100, 100, 200, 200);
+
+			then = now - (delta % this.INTERVAL);
+		};
+		requestAnimationFrame(frame);
+	}
+}
+
+const canvas = new Canvas();
 
 window.addEventListener('load', () => {
-	init();
-	render();
+	canvas.init();
+	canvas.render();
 });
 
 window.addEventListener('resize', () => {
-	render();
+	canvas.render();
 });
