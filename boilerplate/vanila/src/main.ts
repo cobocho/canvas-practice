@@ -24,7 +24,7 @@ class Canvas extends CanvasOption {
 		let then = Date.now();
 
 		const frame = () => {
-			requestAnimationFrame(() => this.render());
+			requestAnimationFrame(frame);
 
 			now = Date.now();
 			delta = now - then;
@@ -35,7 +35,7 @@ class Canvas extends CanvasOption {
 
 			then = now - (delta % this.INTERVAL);
 		};
-		requestAnimationFrame(frame);
+		requestAnimationFrame(frame.bind(this));
 	}
 }
 
